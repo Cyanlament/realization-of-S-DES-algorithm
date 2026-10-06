@@ -1,0 +1,181 @@
+{
+  "source": "local independent C++ reference; not another student group",
+  "key_schedule": "LS-1 then cumulative LS-2",
+  "vectors": [
+    {
+      "key": "0000000000",
+      "plaintext": "00000000",
+      "ciphertext": "11110000"
+    },
+    {
+      "key": "0000000000",
+      "plaintext": "00000001",
+      "ciphertext": "10001001"
+    },
+    {
+      "key": "0000000000",
+      "plaintext": "01000001",
+      "ciphertext": "00011101"
+    },
+    {
+      "key": "0000000000",
+      "plaintext": "01010101",
+      "ciphertext": "11111011"
+    },
+    {
+      "key": "0000000000",
+      "plaintext": "10101010",
+      "ciphertext": "00010001"
+    },
+    {
+      "key": "0000000000",
+      "plaintext": "11010111",
+      "ciphertext": "10000100"
+    },
+    {
+      "key": "0000000000",
+      "plaintext": "11111111",
+      "ciphertext": "00010100"
+    },
+    {
+      "key": "0000000001",
+      "plaintext": "00000000",
+      "ciphertext": "10110001"
+    },
+    {
+      "key": "0000000001",
+      "plaintext": "00000001",
+      "ciphertext": "01100000"
+    },
+    {
+      "key": "0000000001",
+      "plaintext": "01000001",
+      "ciphertext": "11110100"
+    },
+    {
+      "key": "0000000001",
+      "plaintext": "01010101",
+      "ciphertext": "00010010"
+    },
+    {
+      "key": "0000000001",
+      "plaintext": "10101010",
+      "ciphertext": "01010000"
+    },
+    {
+      "key": "0000000001",
+      "plaintext": "11010111",
+      "ciphertext": "01101101"
+    },
+    {
+      "key": "0000000001",
+      "plaintext": "11111111",
+      "ciphertext": "11111001"
+    },
+    {
+      "key": "0101010101",
+      "plaintext": "00000000",
+      "ciphertext": "11010011"
+    },
+    {
+      "key": "0101010101",
+      "plaintext": "00000001",
+      "ciphertext": "11001011"
+    },
+    {
+      "key": "0101010101",
+      "plaintext": "01000001",
+      "ciphertext": "01111011"
+    },
+    {
+      "key": "0101010101",
+      "plaintext": "01010101",
+      "ciphertext": "10010100"
+    },
+    {
+      "key": "0101010101",
+      "plaintext": "10101010",
+      "ciphertext": "00101010"
+    },
+    {
+      "key": "0101010101",
+      "plaintext": "11010111",
+      "ciphertext": "10010001"
+    },
+    {
+      "key": "0101010101",
+      "plaintext": "11111111",
+      "ciphertext": "11000101"
+    },
+    {
+      "key": "1010000010",
+      "plaintext": "00000000",
+      "ciphertext": "00001110"
+    },
+    {
+      "key": "1010000010",
+      "plaintext": "00000001",
+      "ciphertext": "10000001"
+    },
+    {
+      "key": "1010000010",
+      "plaintext": "01000001",
+      "ciphertext": "00010101"
+    },
+    {
+      "key": "1010000010",
+      "plaintext": "01010101",
+      "ciphertext": "11000001"
+    },
+    {
+      "key": "1010000010",
+      "plaintext": "10101010",
+      "ciphertext": "10001101"
+    },
+    {
+      "key": "1010000010",
+      "plaintext": "11010111",
+      "ciphertext": "10001100"
+    },
+    {
+      "key": "1010000010",
+      "plaintext": "11111111",
+      "ciphertext": "11101010"
+    },
+    {
+      "key": "1111111111",
+      "plaintext": "00000000",
+      "ciphertext": "11101011"
+    },
+    {
+      "key": "1111111111",
+      "plaintext": "00000001",
+      "ciphertext": "10100000"
+    },
+    {
+      "key": "1111111111",
+      "plaintext": "01000001",
+      "ciphertext": "01110100"
+    },
+    {
+      "key": "1111111111",
+      "plaintext": "01010101",
+      "ciphertext": "11101110"
+    },
+    {
+      "key": "1111111111",
+      "plaintext": "10101010",
+      "ciphertext": "00000100"
+    },
+    {
+      "key": "1111111111",
+      "plaintext": "11010111",
+      "ciphertext": "10101001"
+    },
+    {
+      "key": "1111111111",
+      "plaintext": "11111111",
+      "ciphertext": "00001111"
+    }
+  ]
+}

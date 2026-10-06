@@ -1,0 +1,7 @@
+# Preserve exact evidence bytes across operating systems, including CSV line endings.
+* -text
+*.pdf binary
+*.png binary
+*.gif binary
+*.zip binary
+*.bundle binary

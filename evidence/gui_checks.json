@@ -1,0 +1,52 @@
+{
+  "rendering": "QT_QPA_PLATFORM=offscreen; real PySide6 widgets; no desktop capture",
+  "pyside6": "6.11.2",
+  "checks_passed": 20,
+  "checks": [
+    "GUI binary encryption",
+    "GUI binary decryption",
+    "GUI input validation clears stale block output",
+    "GUI ASCII roundtrip / Hex",
+    "GUI ASCII roundtrip / Base64",
+    "GUI ASCII roundtrip / 转义字节",
+    "GUI UTF-8 roundtrip",
+    "GUI search thread completed",
+    "GUI result delivered",
+    "GUI search button reenabled",
+    "GUI displays every single-pair candidate",
+    "GUI search thread completed",
+    "GUI result delivered",
+    "GUI search button reenabled",
+    "GUI multiple pairs recover unique key",
+    "GUI search thread completed",
+    "GUI result delivered",
+    "GUI search button reenabled",
+    "GUI conflicting pairs produce no matches",
+    "GUI collision summary"
+  ],
+  "single_pair_search": {
+    "keys": [
+      "0110000000",
+      "1010000010",
+      "1011001010"
+    ],
+    "checked": 1024,
+    "elapsed_ns": 4165100,
+    "started_at": "2026-10-06T17:07:31.947855+00:00",
+    "ended_at": "2026-10-06T17:07:31.951930+00:00",
+    "cancelled": false,
+    "elapsed_ms": 4.1651
+  },
+  "multiple_pair_search": {
+    "keys": [
+      "1010000010"
+    ],
+    "checked": 1024,
+    "elapsed_ns": 969500,
+    "started_at": "2026-10-06T17:07:32.007733+00:00",
+    "ended_at": "2026-10-06T17:07:32.008798+00:00",
+    "cancelled": false,
+    "elapsed_ms": 0.9695
+  },
+  "gif_note": "Frames are held for readability. Playback duration is not cracking duration; use captured nanosecond timestamps."
+}

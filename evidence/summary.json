@@ -1,0 +1,68 @@
+{
+  "generated_at_utc": "2026-10-06T16:54:47.345174+00:00",
+  "environment": {
+    "python": "3.10.0 (tags/v3.10.0:b494f59, Oct  4 2021, 19:00:18) [MSC v.1929 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "machine": "",
+    "processor": "",
+    "cpp_compiler": "g++.EXE (i686-posix-sjlj, built by strawberryperl.com project) 4.9.2"
+  },
+  "unit_tests": {
+    "run": 20,
+    "failures": 0,
+    "errors": 0
+  },
+  "exhaustive_roundtrips": 262144,
+  "fixed_key_permutations": 1024,
+  "cross_language": {
+    "cases": 262144,
+    "mismatches": 0,
+    "cpp_reverse_cases": 35,
+    "table_sha256": "379855d6f46622f716ed5f2ca210277366235969d83f3dadb199773f4800e8a9"
+  },
+  "ascii": {
+    "plaintext": "Hello, S-DES!",
+    "key": "1010000010",
+    "byte_count": 13,
+    "cipher_hex": "C4 F8 0D 0D 2F 99 62 4F 36 5F 50 4F 29",
+    "cipher_base64": "xPgNDS+ZYk82X1BPKQ==",
+    "cipher_escaped": "\\xc4\\xf8\\x0d\\x0d\\x2f\\x99\\x62\\x4f\\x36\\x5f\\x50\\x4f\\x29",
+    "decrypted": "Hello, S-DES!"
+  },
+  "attack_benchmark": {
+    "runs": 30,
+    "min_ms": 0.8565,
+    "median_ms": 0.9843,
+    "max_ms": 2.2415
+  },
+  "collision": {
+    "random_seed": 20261007,
+    "random_plaintext": "01110100",
+    "random_key": "1011010110",
+    "random_ciphertext": "11111010",
+    "random_pair_candidates": [
+      "0100010011",
+      "0101011011",
+      "0110010110",
+      "0111011110",
+      "1010011110",
+      "1011010110"
+    ],
+    "plaintexts_checked": 256,
+    "all_plaintexts_have_collisions": true,
+    "min_distinct_ciphertexts": 238,
+    "max_distinct_ciphertexts": 240,
+    "max_keys_per_ciphertext": 12,
+    "unique_full_encryption_permutations": 1024,
+    "globally_equivalent_key_groups": 0,
+    "plaintext_215": {
+      "plaintext": "11010111",
+      "distinct_ciphertexts": 240,
+      "collision_groups": 224,
+      "singleton_groups": 16,
+      "max_keys_per_ciphertext": 12,
+      "colliding_key_pairs": 2296
+    }
+  },
+  "elapsed_seconds": 6.426715100002184
+}

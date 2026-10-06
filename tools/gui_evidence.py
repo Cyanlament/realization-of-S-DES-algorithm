@@ -1,0 +1,127 @@
+"""Offscreen Qt integration checks and authentic widget captures.
+
+These are renders of the real application widgets, not fabricated screenshots.
+Run using the Python environment containing PySide6; no desktop input is sent.
+"""
+import json
+import os
+import sys
+import time
+from pathlib import Path
+
+os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from PySide6 import __version__ as qt_binding_version
+from PySide6.QtGui import QFontDatabase
+from PySide6.QtWidgets import QApplication
+from sdes.gui import MainWindow
+
+
+def main():
+    output = ROOT / "evidence" / "screenshots"
+    output.mkdir(parents=True, exist_ok=True)
+    app = QApplication.instance() or QApplication([])
+    # Windows' offscreen QPA does not enumerate system fonts. Register installed
+    # fonts explicitly so widget evidence remains legible; no font is bundled.
+    for filename in ("msyh.ttc", "msyhbd.ttc", "consola.ttf"):
+        font_path = Path("C:/Windows/Fonts") / filename
+        if font_path.exists():
+            QFontDatabase.addApplicationFont(str(font_path))
+    app.setStyle("Fusion")
+    window = MainWindow()
+    window.show()
+    app.processEvents()
+    checks = []
+
+    def check(condition, label):
+        if not condition:
+            raise AssertionError(label)
+        checks.append(label)
+
+    def capture(name):
+        app.processEvents()
+        if not window.grab().save(str(output / name)):
+            raise RuntimeError(f"Failed to save {name}")
+
+    window.process_block()
+    check(window.block_output.text() == "10001100", "GUI binary encryption")
+    capture("01_binary_encrypt.png")
+    window.block_input.setText(window.block_output.text())
+    window.process_block(True)
+    check(window.block_output.text() == "11010111", "GUI binary decryption")
+    capture("02_binary_decrypt.png")
+    window.block_input.setText("123")
+    window.process_block()
+    check("输入错误" in window.block_status.text() and not window.block_output.text(), "GUI input validation clears stale block output")
+    capture("03_validation.png")
+    window.block_input.setText("11010111")
+    window.process_block()
+
+    window.tabs.setCurrentIndex(1)
+    original = "Hello, S-DES!"
+    for mode in ("Hex", "Base64", "转义字节"):
+        window.cipher_format.setCurrentText(mode)
+        window.plaintext.setPlainText(original)
+        window.process_text()
+        window.plaintext.clear()
+        window.process_text(True)
+        check(window.plaintext.toPlainText() == original, "GUI ASCII roundtrip / " + mode)
+    window.cipher_format.setCurrentText("Hex")
+    window.process_text()
+    capture("04_ascii.png")
+    window.text_encoding.setCurrentText("UTF-8")
+    unicode_sample = "信息安全：S-DES 🔐"
+    window.plaintext.setPlainText(unicode_sample)
+    window.process_text()
+    window.plaintext.clear()
+    window.process_text(True)
+    check(window.plaintext.toPlainText() == unicode_sample, "GUI UTF-8 roundtrip")
+    capture("05_unicode.png")
+
+    window.tabs.setCurrentIndex(2)
+    window.pair_input.setPlainText("11010111 10001100")
+    capture("06_attack_before.png")
+
+    def run_search():
+        window.start_search()
+        deadline = time.monotonic() + 10
+        while window.worker.isRunning() and time.monotonic() < deadline:
+            app.processEvents()
+            time.sleep(0.001)
+        check(not window.worker.isRunning(), "GUI search thread completed")
+        # Deliver queued result and finished signals after QThread exits.
+        app.processEvents()
+        check(window.last_search is not None, "GUI result delivered")
+        check(window.search_button.isEnabled(), "GUI search button reenabled")
+
+    run_search()
+    single = window.last_search.to_dict()
+    check(642 in window.last_search.keys and len(window.last_search.keys) > 1, "GUI displays every single-pair candidate")
+    capture("07_attack_single_pair.png")
+    window.pair_input.setPlainText((ROOT / "evidence/known_pairs.txt").read_text(encoding="utf-8"))
+    capture("08_attack_multiple_before.png")
+    run_search()
+    multiple = window.last_search.to_dict()
+    check(window.last_search.keys == (642,), "GUI multiple pairs recover unique key")
+    capture("09_attack_multiple_result.png")
+    window.pair_input.setPlainText("00000000 00000000\n00000000 00000001")
+    run_search()
+    check(window.last_search.keys == (), "GUI conflicting pairs produce no matches")
+    capture("10_attack_no_match.png")
+
+    window.tabs.setCurrentIndex(3)
+    window.process_collisions()
+    check("240" in window.collision_status.text(), "GUI collision summary")
+    capture("11_collisions.png")
+    window.close()
+    data = {"rendering": "QT_QPA_PLATFORM=offscreen; real PySide6 widgets; no desktop capture",
+            "pyside6": qt_binding_version, "checks_passed": len(checks), "checks": checks,
+            "single_pair_search": single, "multiple_pair_search": multiple,
+            "gif_note": "Frames are held for readability. Playback duration is not cracking duration; use captured nanosecond timestamps."}
+    (ROOT / "evidence/gui_checks.json").write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps(data, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

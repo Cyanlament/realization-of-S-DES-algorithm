@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.py[cod]
+build/
+tmp/
+dist/
+*.exe
+*.obj
+output/*.zip
+output/submission_manifest.json
