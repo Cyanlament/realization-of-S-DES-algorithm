@@ -1,5 +1,6 @@
 # Preserve exact evidence bytes across operating systems, including CSV line endings.
 * -text
+*.bat text eol=crlf
 *.pdf binary
 *.png binary
 *.gif binary

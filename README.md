@@ -13,6 +13,8 @@
 
 Windows 安装 Python 3.10 或更新版本后，双击 **`run.bat`**。首次启动自动创建项目虚拟环境并安装 Qt 依赖。
 
+Windows 启动入口已单独验证。脚本使用 CRLF 换行；启动失败时会保留窗口，并将具体原因记录在 `startup.log`。
+
 也可手动运行：
 
 ```powershell

@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     files = [ROOT / name for name in (
-        ".gitattributes", ".gitignore", "README.md", "requirements.txt", "requirements-dev.txt", "main.py", "run.bat")]
+        ".editorconfig", ".gitattributes", ".gitignore", "README.md", "requirements.txt", "requirements-dev.txt", "main.py", "run.bat")]
     for directory in ("sdes", "reference", "tests", "tools", "docs", "evidence", "output/pdf", ".github"):
         files.extend(path for path in (ROOT / directory).rglob("*")
                      if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc")

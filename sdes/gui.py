@@ -3,7 +3,7 @@ import json
 import sys
 from datetime import datetime
 
-from PySide6.QtCore import QThread, Signal
+from PySide6.QtCore import QThread, QTimer, Signal
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
     QApplication, QComboBox, QFormLayout, QHBoxLayout, QLabel, QLineEdit,
@@ -304,9 +304,31 @@ class MainWindow(QMainWindow):
         event.accept()
 
 
-def run():
+def run(smoke_test=False):
     app = QApplication.instance() or QApplication(sys.argv)
     app.setStyle("Fusion")
     window = MainWindow()
     window.show()
+    if smoke_test:
+        # Exercise the actual entry point and native event loop, then terminate
+        # automatically so launcher regression checks cannot leave windows open.
+        def check_startup():
+            exit_code = 0
+            try:
+                if not window.isVisible():
+                    raise RuntimeError("Main window is not visible")
+                window.process_block()
+                if window.block_output.text() != "10001100":
+                    raise RuntimeError("Default GUI encryption did not succeed")
+                print("SDES_LAUNCH_OK " + json.dumps({
+                    "platform": app.platformName(), "window_visible": window.isVisible(),
+                    "ciphertext": window.block_output.text(),
+                }), flush=True)
+            except Exception as error:
+                print("SDES_LAUNCH_FAILED " + str(error), flush=True)
+                exit_code = 1
+            finally:
+                window.close()
+                app.exit(exit_code)
+        QTimer.singleShot(500, check_startup)
     sys.exit(app.exec())
