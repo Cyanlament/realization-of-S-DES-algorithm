@@ -8,6 +8,7 @@ from pathlib import Path
 
 from docx import Document
 from docx.enum.table import WD_TABLE_ALIGNMENT, WD_CELL_VERTICAL_ALIGNMENT
+from docx.enum.style import WD_STYLE_TYPE
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
@@ -15,15 +16,25 @@ from docx.shared import Cm, Pt, RGBColor
 from report_content import report_pages
 
 ROOT = Path(__file__).resolve().parents[1]
+REPORT_FONT = "仿宋"
 
 
-def set_font(style, family, size, bold=False):
-    style.font.name = "Times New Roman"
+def set_family(properties):
+    fonts = properties.find(qn("w:rFonts"))
+    if fonts is None:
+        fonts = OxmlElement("w:rFonts")
+        properties.insert(0, fonts)
+    fonts.attrib.clear()
+    for script in ("ascii", "hAnsi", "eastAsia", "cs"):
+        fonts.set(qn("w:" + script), REPORT_FONT)
+
+
+def set_font(style, size, bold=False):
     style.font.size = Pt(size)
     style.font.bold = bold
     style.font.italic = False
     style.font.color.rgb = RGBColor(0, 0, 0)
-    style.element.get_or_add_rPr().get_or_add_rFonts().set(qn("w:eastAsia"), family)
+    set_family(style.element.get_or_add_rPr())
 
 
 def make_document():
@@ -33,24 +44,42 @@ def make_document():
     section.top_margin = section.bottom_margin = Cm(2.4)
     section.left_margin = section.right_margin = Cm(2.5)
     section.header_distance, section.footer_distance = Cm(1.5), Cm(1.4)
+    for style in document.styles:
+        set_family(style.element.get_or_add_rPr())
+    defaults = document.styles.element.find(qn("w:docDefaults"))
+    if defaults is not None:
+        properties = defaults.find(qn("w:rPrDefault")).find(qn("w:rPr"))
+        set_family(properties)
     normal = document.styles["Normal"]
-    set_font(normal, "宋体", 11)
-    normal.paragraph_format.line_spacing = 1.3
-    normal.paragraph_format.space_after = Pt(6)
+    set_font(normal, 12)
+    normal.paragraph_format.line_spacing = 1.2
+    normal.paragraph_format.space_after = Pt(5)
     normal.paragraph_format.widow_control = True
-    for name, size in (("Title", 24), ("Subtitle", 16), ("Heading 1", 15), ("Heading 2", 13), ("Heading 3", 11)):
+    for name, size in (("Title", 22), ("Subtitle", 16), ("Heading 1", 16), ("Heading 2", 14), ("Heading 3", 12)):
         style = document.styles[name]
-        set_font(style, "黑体", size, name.startswith("Heading"))
-        style.paragraph_format.space_before = Pt(10 if name.startswith("Heading") else 0)
+        set_font(style, size, name.startswith("Heading") or name == "Title")
+        style.paragraph_format.space_before = Pt(8 if name.startswith("Heading") else 0)
         style.paragraph_format.space_after = Pt(8)
         style.paragraph_format.line_spacing = 1.15
         style.paragraph_format.keep_with_next = True
     for style in document.styles:
         for border in style.element.findall('.//' + qn('w:pBdr')):
             border.getparent().remove(border)
-    set_font(document.styles["Caption"], "宋体", 10)
+    set_font(document.styles["Caption"], 10.5)
     document.styles["Caption"].paragraph_format.space_after = Pt(8)
     document.styles["Caption"].paragraph_format.line_spacing = 1.1
+    set_font(document.styles["Footer"], 10.5)
+    for name, size, bold, line in (("Report Table", 10.5, False, 1.15),
+                                   ("Report Table Header", 10.5, True, 1.15),
+                                   ("Report Code", 10.5, False, 1.15),
+                                   ("Report Spacer", 4, False, 1)):
+        style = document.styles.add_style(name, WD_STYLE_TYPE.PARAGRAPH)
+        style.base_style = normal
+        set_font(style, size, bold)
+        style.paragraph_format.space_after = Pt(0)
+        style.paragraph_format.line_spacing = line
+    for fonts in document.styles.element.iter(qn("w:rFonts")):
+        set_family(fonts.getparent())
     footer = section.footer.paragraphs[0]
     footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
     field = OxmlElement("w:fldSimple")
@@ -89,7 +118,7 @@ def add_table(document, rows, widths):
             margins = OxmlElement("w:tcMar")
             for side in ("top", "left", "bottom", "right"):
                 element = OxmlElement("w:" + side)
-                element.set(qn("w:w"), "85")
+                element.set(qn("w:w"), "40")
                 element.set(qn("w:type"), "dxa")
                 margins.append(element)
             properties.append(margins)
@@ -98,15 +127,9 @@ def add_table(document, rows, widths):
                 fill.set(qn("w:fill"), "F0F0F0")
                 properties.append(fill)
             paragraph = cell.paragraphs[0]
-            paragraph.paragraph_format.space_after = Pt(0)
-            paragraph.paragraph_format.line_spacing = 1.15
-            run = paragraph.add_run(str(value))
-            run.font.size = Pt(10)
-            run.bold = index == 0
-    spacer = document.add_paragraph()
-    spacer.paragraph_format.space_after = Pt(0)
-    spacer.paragraph_format.line_spacing = Pt(4)
-    spacer.add_run().font.size = Pt(4)
+            paragraph.style = "Report Table Header" if index == 0 else "Report Table"
+            paragraph.add_run(str(value))
+    document.add_paragraph(style="Report Spacer")
 
 
 def write_reports(pages):
@@ -126,7 +149,9 @@ def write_reports(pages):
                 markdown.append(prefix + " " + value)
             elif kind == "p":
                 paragraph = document.add_paragraph(value)
-                paragraph.paragraph_format.first_line_indent = Pt(22)
+                paragraph.paragraph_format.first_line_indent = Pt(24)
+                paragraph.alignment = (WD_ALIGN_PARAGRAPH.LEFT if "https://" in value or "http://" in value
+                                       else WD_ALIGN_PARAGRAPH.JUSTIFY)
                 markdown.append(value)
             elif kind == "table":
                 add_table(document, value, element[2])
@@ -145,12 +170,7 @@ def write_reports(pages):
                 markdown.append(f"![{element[2]}](../{value})")
             elif kind == "code":
                 for line in value.splitlines():
-                    paragraph = document.add_paragraph()
-                    paragraph.paragraph_format.space_after = Pt(0)
-                    paragraph.paragraph_format.line_spacing = 1.15
-                    run = paragraph.add_run(line)
-                    run.font.name = "Consolas"
-                    run.font.size = Pt(10)
+                    document.add_paragraph(line, "Report Code")
                 markdown.append("```text\n" + value + "\n```")
             elif kind == "gif":
                 document.add_paragraph("演示动图：" + value)

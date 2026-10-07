@@ -2,13 +2,12 @@
 
 信息安全导论 · 作业 1。一个用于探索 S-DES 分组加密、密钥搜索和碰撞现象的桌面工具。
 
-
 | 组员 | 姓名 | 学号 |
 | --- | --- | --- |
 | 1 | 蔡旭涛 | 20240947 |
 | 2 | 扶满 | 20245177 |
 
-## 启动
+## 1 启动
 
 Windows 可直接双击 [dist/S-DES.exe](dist/S-DES.exe)，无需安装 Python 或 Qt。
 
@@ -32,7 +31,7 @@ python3 -m venv .venv
 .venv/bin/python main.py
 ```
 
-## 打包独立 exe
+## 2 打包独立 exe
 
 没有 Python 环境的电脑可直接运行打包好的程序。双击 **`build-exe.bat`**，或在项目根目录执行：
 
@@ -47,7 +46,7 @@ python3 -m venv .venv
 
 ![分组加密界面](evidence/screenshots/01_binary_encrypt.png)
 
-## 实验成果
+## 3 实验成果
 
 | 要求 | 实现与证据 |
 | --- | --- |
@@ -60,7 +59,7 @@ python3 -m venv .venv
 
 本地测试环境为 Windows。仓库配置了 Windows/Linux/macOS 验证工作流，运行记录见 Actions。
 
-## 文档入口
+## 4 文档入口
 
 - [Word 报告](docs/S-DES实验报告.docx) / [PDF 报告](output/pdf/S-DES实验报告.pdf) / [在线阅读](docs/实验报告.md)
 - [用户指南](docs/用户指南.md)
@@ -69,13 +68,13 @@ python3 -m venv .venv
 - [跨组测试记录](docs/跨组测试记录.md)
 - [机器可读结果汇总](evidence/summary.json)
 
-## 暴力破解演示
+## 5 暴力破解演示
 
 ![暴力破解动图](evidence/brute_force_demo.gif)
 
 动图依次展示单对输入、单对结果、多对输入和多对结果。画面有阅读停留，搜索耗时见界面及 [计时记录](evidence/gui_checks.json)。
 
-## 快速验证
+## 6 快速验证
 
 核心算法和命令行只使用 Python 标准库，无需安装 Qt：
 
@@ -93,7 +92,7 @@ python tools/verify_vectors.py evidence/cross_vectors.json
 python tools/run_experiments.py
 ```
 
-## 目录
+## 7 目录
 
 ```text
 main.py                    桌面程序入口
