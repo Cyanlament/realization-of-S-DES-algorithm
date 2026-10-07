@@ -9,7 +9,7 @@ from .encoding import decode_plaintext, encode_plaintext, parse_ciphertext, rend
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="S-DES 实验：严格使用要求.pdf中的 S-box")
+    parser = argparse.ArgumentParser(description="S-DES：分组与文本加解密、密钥搜索、碰撞分析")
     subparsers = parser.add_subparsers(dest="command", required=True)
     for operation in ("encrypt", "decrypt"):
         child = subparsers.add_parser(operation)

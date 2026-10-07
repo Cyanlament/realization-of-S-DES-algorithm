@@ -15,6 +15,7 @@ sys.path.insert(0, str(ROOT))
 from PySide6 import __version__ as qt_binding_version
 from PySide6.QtGui import QFontDatabase
 from PySide6.QtWidgets import QApplication
+from sdes.encoding import parse_ciphertext
 from sdes.gui import MainWindow
 
 
@@ -47,8 +48,10 @@ def main():
     window.process_block()
     check(window.block_output.text() == "10001100", "GUI binary encryption")
     capture("01_binary_encrypt.png")
-    window.block_input.setText(window.block_output.text())
-    window.process_block(True)
+    window.block_reuse.click()
+    check(window.block_input.text() == "10001100" and window.block_decrypt
+          and not window.block_output.text(), "GUI reuse result switches to decryption and clears prior result")
+    window.block_run.click()
     check(window.block_output.text() == "11010111", "GUI binary decryption")
     capture("02_binary_decrypt.png")
     window.block_input.setText("123")
@@ -70,6 +73,15 @@ def main():
     window.cipher_format.setCurrentText("Hex")
     window.process_text()
     capture("04_ascii.png")
+    expected_bytes = parse_ciphertext(window.ciphertext.toPlainText(), "Hex")
+    for mode in ("Base64", "转义字节", "Hex"):
+        window.cipher_format.setCurrentText(mode)
+        check(parse_ciphertext(window.ciphertext.toPlainText(), mode) == expected_bytes,
+              "GUI format switch preserves existing ciphertext / " + mode)
+    window.ciphertext.setPlainText("invalid hex")
+    window.cipher_format.setCurrentText("Base64")
+    check(window.cipher_format.currentText() == "Hex" and window.ciphertext.toPlainText() == "invalid hex"
+          and window.text_status.property("state") == "error", "GUI invalid ciphertext keeps prior format and input")
     window.text_encoding.setCurrentText("UTF-8")
     unicode_sample = "信息安全：S-DES 🔐"
     window.plaintext.setPlainText(unicode_sample)
@@ -100,6 +112,8 @@ def main():
     check(642 in window.last_search.keys and len(window.last_search.keys) > 1, "GUI displays every single-pair candidate")
     capture("07_attack_single_pair.png")
     window.pair_input.setPlainText((ROOT / "evidence/known_pairs.txt").read_text(encoding="utf-8"))
+    check(window.last_search is None and not window.search_result.toPlainText()
+          and window.search_count.text() == "—", "GUI changed pairs clear prior search results")
     capture("08_attack_multiple_before.png")
     run_search()
     multiple = window.last_search.to_dict()
@@ -114,6 +128,25 @@ def main():
     window.process_collisions()
     check("240" in window.collision_status.text(), "GUI collision summary")
     capture("11_collisions.png")
+    # Exercise navigation and the supported minimum size; retain QA renders
+    # outside the deliverable screenshots so the eleven evidence frames stay stable.
+    review = ROOT / "tmp/ui-review"
+    review.mkdir(parents=True, exist_ok=True)
+    window.resize(980, 690)
+    navigation_ok, layout_ok = [], []
+    for index, item in enumerate(window.nav_buttons):
+        item.click()
+        app.processEvents()
+        page = window.tabs.currentWidget()
+        app.processEvents()
+        navigation_ok.append(window.tabs.currentIndex() == index and item.isChecked()
+                             and window.page_title.text() == window.PAGE_NAMES[index])
+        layout_ok.append(page.widget().width() <= page.viewport().width()
+                         and page.horizontalScrollBar().maximum() == 0)
+        window.grab().save(str(review / f"minimum_{index}.png"))
+    check(all(navigation_ok), "GUI sidebar switches content and heading")
+    check(window.width() == 980 and window.height() == 690 and all(layout_ok),
+          "GUI all four pages fit the minimum width without hidden horizontal content")
     window.close()
     data = {"rendering": "QT_QPA_PLATFORM=offscreen; real PySide6 widgets; no desktop capture",
             "pyside6": qt_binding_version, "checks_passed": len(checks), "checks": checks,
