@@ -1,4 +1,4 @@
-// Independent, string-based S-DES reference. No Python code/tables are imported.
+// String-based S-DES implementation for comparison with the Python version.
 // Compile: g++ -std=c++11 -O2 reference/sdes_reference.cpp -o build/sdes_reference
 #include <fstream>
 #include <iostream>

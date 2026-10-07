@@ -1,7 +1,6 @@
-"""Pure S-DES functions. Bit positions in the assignment are one-based, MSB first.
+"""S-DES bit operations, with positions numbered from the most significant bit.
 
 The second key shift is cumulative: LS-1, then LS-2 (three positions total).
-SBOX2 is the assignment's modified table, not a table copied from a textbook.
 """
 from functools import lru_cache
 
@@ -70,8 +69,7 @@ def round_function(right: int, subkey: int) -> int:
     return permute(substitution, 4, P4)
 
 
-# Small immutable lookup tables accelerate exhaustive experiments. The actual
-# permutation and substitution definitions above remain the source of truth.
+# Precompute the fixed permutations and round function for exhaustive searches.
 _INITIAL = tuple(permute(value, 8, IP) for value in range(256))
 _FINAL = tuple(permute(value, 8, IP_INVERSE) for value in range(256))
 _ROUND = tuple(tuple(round_function(right, key) for right in range(16)) for key in range(256))
@@ -108,7 +106,7 @@ def transform_bytes(data: bytes, key: int, decrypt: bool = False) -> bytes:
 
 
 def trace_block(block: int, key: int, decrypt: bool = False) -> dict:
-    """Return JSON-serializable intermediate values for teaching and auditing."""
+    """Return the subkeys and intermediate values of both rounds."""
     validate_integer(block, 8, "分组")
     first, second = generate_subkeys(key)
     scheduled = [f"{first:08b}", f"{second:08b}"]

@@ -1,7 +1,9 @@
-# Preserve exact evidence bytes across operating systems, including CSV line endings.
+# Evidence files retain their recorded bytes and line endings.
 * -text
 *.bat text eol=crlf
 *.pdf binary
+*.docx binary
+*.exe binary
 *.png binary
 *.gif binary
 *.zip binary

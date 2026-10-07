@@ -1,8 +1,4 @@
-"""Offscreen Qt integration checks and authentic widget captures.
-
-These are renders of the real application widgets, not fabricated screenshots.
-Run using the Python environment containing PySide6; no desktop input is sent.
-"""
+"""Run Qt integration checks and save widget screenshots."""
 import json
 import os
 import sys
@@ -23,8 +19,7 @@ def main():
     output = ROOT / "evidence" / "screenshots"
     output.mkdir(parents=True, exist_ok=True)
     app = QApplication.instance() or QApplication([])
-    # Windows' offscreen QPA does not enumerate system fonts. Register installed
-    # fonts explicitly so widget evidence remains legible; no font is bundled.
+    # Windows offscreen rendering needs explicit font registration.
     for filename in ("msyh.ttc", "msyhbd.ttc", "consola.ttf"):
         font_path = Path("C:/Windows/Fonts") / filename
         if font_path.exists():
@@ -128,8 +123,7 @@ def main():
     window.process_collisions()
     check("240" in window.collision_status.text(), "GUI collision summary")
     capture("11_collisions.png")
-    # Exercise navigation and the supported minimum size; retain QA renders
-    # outside the deliverable screenshots so the eleven evidence frames stay stable.
+    # Save minimum-size layout checks separately from the report screenshots.
     review = ROOT / "tmp/ui-review"
     review.mkdir(parents=True, exist_ok=True)
     window.resize(980, 690)
@@ -148,10 +142,10 @@ def main():
     check(window.width() == 980 and window.height() == 690 and all(layout_ok),
           "GUI all four pages fit the minimum width without hidden horizontal content")
     window.close()
-    data = {"rendering": "QT_QPA_PLATFORM=offscreen; real PySide6 widgets; no desktop capture",
+    data = {"rendering": "PySide6 widgets with QT_QPA_PLATFORM=offscreen",
             "pyside6": qt_binding_version, "checks_passed": len(checks), "checks": checks,
             "single_pair_search": single, "multiple_pair_search": multiple,
-            "gif_note": "Frames are held for readability. Playback duration is not cracking duration; use captured nanosecond timestamps."}
+            "gif_note": "Frame durations: 1500, 3500, 1500, 4500 ms. Search durations are recorded in elapsed_ns."}
     (ROOT / "evidence/gui_checks.json").write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(data, ensure_ascii=False, indent=2))
 

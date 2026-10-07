@@ -5,6 +5,9 @@ build/
 tmp/
 dist/
 *.exe
+!dist/
+dist/*
+!dist/S-DES.exe
 *.obj
 output/*.zip
 output/submission_manifest.json

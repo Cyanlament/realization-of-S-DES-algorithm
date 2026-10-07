@@ -1,4 +1,4 @@
-"""Native S-DES workbench. Algorithms remain independent from presentation."""
+"""S-DES desktop window and background key search."""
 import json
 import sys
 from datetime import datetime
@@ -122,7 +122,6 @@ class MainWindow(QMainWindow):
         header.addWidget(self.page_title)
         header.addWidget(self.page_description)
         workspace.addLayout(header)
-        # Retain the common setCurrentIndex API used by GUI integration checks.
         self.tabs = QStackedWidget()
         workspace.addWidget(self.tabs, 1)
         root_layout.addLayout(workspace, 1)

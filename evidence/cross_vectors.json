@@ -1,5 +1,5 @@
 {
-  "source": "local independent C++ reference; not another student group",
+  "source": "reference/sdes_reference.cpp",
   "key_schedule": "LS-1 then cumulative LS-2",
   "vectors": [
     {

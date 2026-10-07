@@ -51,7 +51,7 @@ def divider():
 
 
 def icon(kind, size=20):
-    """Use quiet geometric line icons; labels carry the meaning."""
+    """Draw the four sidebar icons."""
     pixmap = QPixmap(size * 2, size * 2)
     pixmap.setDevicePixelRatio(2)
     pixmap.fill(Qt.GlobalColor.transparent)
@@ -81,7 +81,7 @@ def icon(kind, size=20):
 
 
 class Select(QComboBox):
-    """Keep the native menu and keyboard behavior, with a visible chevron."""
+    """Combo box with a custom dropdown arrow."""
     def paintEvent(self, event):
         super().paintEvent(event)
         painter = QPainter(self)
@@ -97,7 +97,7 @@ class Select(QComboBox):
 
 
 class BitReadout(QLineEdit):
-    """Read-only QLineEdit semantics with eight measured bit cells."""
+    """Display an eight-bit result in separate cells."""
     def __init__(self):
         super().__init__()
         self.setReadOnly(True)
@@ -161,7 +161,7 @@ class RoundDetails(QFrame):
 
 
 class CollisionHistogram(QWidget):
-    """A compact view of key counts for every ciphertext, with exact tooltips."""
+    """Plot the number of keys that produce each ciphertext."""
     def __init__(self):
         super().__init__()
         self.counts = [0] * 256

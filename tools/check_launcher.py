@@ -1,8 +1,4 @@
-"""Exercise run.bat through cmd.exe and require a real Qt window to start.
-
-Run on Windows with the desktop dependencies installed. This is intentionally
-separate from core unit tests: it checks the same entry point as double-clicking.
-"""
+"""Check the Windows BAT entry point, window creation and default encryption."""
 import argparse
 import json
 import os

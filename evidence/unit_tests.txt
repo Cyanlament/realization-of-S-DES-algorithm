@@ -20,6 +20,6 @@ test_reject_unknown_modes_and_wrong_type (test_sdes.EncodingTests) ... ok
 test_unicode_and_whitespace_round_trip (test_sdes.EncodingTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 20 tests in 0.445s
+Ran 20 tests in 0.606s
 
 OK

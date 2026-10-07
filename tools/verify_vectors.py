@@ -1,4 +1,4 @@
-"""Verify external-group JSON vectors without silently replacing their values."""
+"""Check encryption and decryption against a JSON vector file."""
 import argparse
 import json
 import sys

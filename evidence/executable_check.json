@@ -1,0 +1,11 @@
+{
+  "file": "dist/S-DES.exe",
+  "size": 38235635,
+  "sha256": "8f6fd3315cdbcfdf9a1b5c19eecb4721803ed53057c0d18e322d1c29e95d270a",
+  "entry_point": "S-DES.exe --smoke-test",
+  "platform": "windows",
+  "different_working_directory": true,
+  "exit_code": 0,
+  "passed": true,
+  "process_elapsed_seconds": 5.4
+}

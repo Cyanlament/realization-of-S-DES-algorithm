@@ -59,7 +59,7 @@ def main():
     print("Cross-language: 262144 / 262144 matched", flush=True)
     compiler_version = subprocess.check_output([compiler, "--version"], text=True).splitlines()[0]
 
-    # Small portable fixtures can be exchanged with another group independently.
+    # Export a small set of vectors for exchanging results between programs.
     vectors = []
     for key in (0, 1, 341, 642, 1023):
         for plaintext in (0, 1, 65, 85, 170, 215, 255):
@@ -69,7 +69,7 @@ def main():
             assert reference_plain == f"{plaintext:08b}"
             vectors.append({"key": f"{key:010b}", "plaintext": f"{plaintext:08b}",
                             "ciphertext": f"{cipher:08b}"})
-    save_json(evidence / "cross_vectors.json", {"source": "local independent C++ reference; not another student group",
+    save_json(evidence / "cross_vectors.json", {"source": "reference/sdes_reference.cpp",
                                                "key_schedule": "LS-1 then cumulative LS-2", "vectors": vectors})
     with (evidence / "cross_vectors.csv").open("w", newline="", encoding="utf-8") as stream:
         writer = csv.DictWriter(stream, fieldnames=("key", "plaintext", "ciphertext"))
