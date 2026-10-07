@@ -1,6 +1,6 @@
 """S-DES bit operations, with positions numbered from the most significant bit.
 
-The second key shift is cumulative: LS-1, then LS-2 (three positions total).
+Each subkey shifts the two P10 halves independently by its round number.
 """
 from functools import lru_cache
 
@@ -45,10 +45,8 @@ def rotate_five(value: int, amount: int) -> int:
 def _subkeys(key: int) -> tuple[int, int]:
     permuted = permute(key, 10, P10)
     left, right = permuted >> 5, permuted & 31
-    left, right = rotate_five(left, 1), rotate_five(right, 1)
-    first = permute((left << 5) | right, 10, P8)
-    left, right = rotate_five(left, 2), rotate_five(right, 2)
-    second = permute((left << 5) | right, 10, P8)
+    first = permute((rotate_five(left, 1) << 5) | rotate_five(right, 1), 10, P8)
+    second = permute((rotate_five(left, 2) << 5) | rotate_five(right, 2), 10, P8)
     return first, second
 
 

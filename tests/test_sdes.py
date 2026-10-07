@@ -11,12 +11,23 @@ class CoreTests(unittest.TestCase):
         self.assertEqual(SBOX2, ((0,1,2,3), (2,3,1,0), (3,0,1,2), (2,1,0,3)))
 
     def test_hand_worked_vector(self):
-        self.assertEqual(generate_subkeys(0b1010000010), (0b10100100, 0b01000011))
-        self.assertEqual(encrypt_block(0b11010111, 0b1010000010), 0b10001100)
-        self.assertEqual(decrypt_block(0b10001100, 0b1010000010), 0b11010111)
+        self.assertEqual(generate_subkeys(0b1010000010), (0b10100100, 0b10010010))
+        self.assertEqual(encrypt_block(0b11010111, 0b1010000010), 0b11101000)
+        self.assertEqual(decrypt_block(0b11101000, 0b1010000010), 0b11010111)
         trace = trace_block(0b11010111, 0b1010000010)
         self.assertEqual(trace["rounds"][0]["sw"], "11010010")
-        self.assertEqual(trace["rounds"][1]["fk"], "01010010")
+        self.assertEqual(trace["rounds"][1]["fk"], "10110010")
+
+    def test_subkeys_from_independent_pdf_shifts(self):
+        def select(value, positions):
+            return ''.join(value[position - 1] for position in positions)
+        for key in range(1024):
+            source = select(f'{key:010b}', (3,5,2,7,4,10,1,9,8,6))
+            expected = []
+            for shift in ((2,3,4,5,1), (3,4,5,1,2)):
+                shifted = select(source[:5], shift) + select(source[5:], shift)
+                expected.append(int(select(shifted, (6,3,7,4,8,5,10,9)), 2))
+            self.assertEqual(generate_subkeys(key), tuple(expected), f'{key:010b}')
 
     def test_inverse_permutation_all_blocks(self):
         for block in range(256):
@@ -99,18 +110,18 @@ class EncodingTests(unittest.TestCase):
 
 class AnalysisTests(unittest.TestCase):
     def test_search_returns_all_matches(self):
-        result = brute_force([(215, 140)])
+        result = brute_force([(215, 232)])
         self.assertIn(642, result.keys)
         self.assertEqual(result.checked, 1024)
-        expected = tuple(key for key in range(1024) if encrypt_block(215, key) == 140)
+        expected = tuple(key for key in range(1024) if encrypt_block(215, key) == 232)
         self.assertEqual(result.keys, expected)
         self.assertGreater(len(result.keys), 1)
         self.assertGreater(result.elapsed_ns, 0)
         self.assertFalse(result.cancelled)
 
-    def test_multiple_pairs_recover_key(self):
+    def test_multiple_pairs_return_equivalent_keys(self):
         pairs = [(value, encrypt_block(value, 642)) for value in range(256)]
-        self.assertEqual(brute_force(pairs).keys, (642,))
+        self.assertEqual(brute_force(pairs).keys, (642, 898))
 
     def test_inconsistent_pairs(self):
         self.assertEqual(brute_force([(0, 0), (0, 1)]).keys, ())

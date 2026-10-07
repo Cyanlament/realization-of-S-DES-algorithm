@@ -1,7 +1,7 @@
 @echo off
 setlocal
 chcp 65001 >nul
-set "SDES_LOG=%~dp0startup.log"
+if not defined SDES_LOG set "SDES_LOG=%~dp0startup.log"
 cd /d "%~dp0"
 if errorlevel 1 goto error
 > "%SDES_LOG%" echo [S-DES] Starting at %date% %time%

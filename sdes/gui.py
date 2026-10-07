@@ -278,7 +278,7 @@ class MainWindow(QMainWindow):
 
     def load_block_example(self):
         self.block_key.setText("1010000010")
-        self.block_input.setText("10001100" if self.block_decrypt else "11010111")
+        self.block_input.setText("11101000" if self.block_decrypt else "11010111")
         self.process_block(self.block_decrypt)
 
     def copy_block(self):
@@ -377,11 +377,11 @@ class MainWindow(QMainWindow):
         columns.setSpacing(16)
         known_panel, known = panel()
         known_panel.setMaximumWidth(360)
-        known.addLayout(heading_row("已知明密文", button("五组示例", self.load_search_example, "ghost")))
+        known.addLayout(heading_row("已知明密文", button("多组示例", self.load_search_example, "ghost")))
         known.addWidget(label("每行一组，用空格分隔。", "muted"))
-        self.pair_input = editor("11010111 10001100")
+        self.pair_input = editor("11010111 11101000")
         self.pair_input.setAccessibleName("已知明密文对")
-        self.pair_input.setPlainText("11010111 10001100")
+        self.pair_input.setPlainText("11010111 11101000")
         self.pair_input.setMinimumHeight(270)
         known.addWidget(self.pair_input, 1)
         known.addWidget(label("明文 8 位     密文 8 位", "caption"))
@@ -572,7 +572,7 @@ def run(smoke_test=False):
                 if not window.isVisible():
                     raise RuntimeError("Main window is not visible")
                 window.process_block()
-                if window.block_output.text() != "10001100":
+                if window.block_output.text() != "11101000":
                     raise RuntimeError("Default GUI encryption did not succeed")
                 print("SDES_LAUNCH_OK " + json.dumps({"platform": app.platformName(), "window_visible": window.isVisible(),
                                                        "ciphertext": window.block_output.text()}), flush=True)

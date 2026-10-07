@@ -23,7 +23,7 @@
     "GUI search thread completed",
     "GUI result delivered",
     "GUI search button reenabled",
-    "GUI multiple pairs recover unique key",
+    "GUI multiple pairs retain equivalent keys",
     "GUI search thread completed",
     "GUI result delivered",
     "GUI search button reenabled",
@@ -34,27 +34,31 @@
   ],
   "single_pair_search": {
     "keys": [
-      "0110000000",
+      "0010110100",
+      "0110110100",
+      "1001011011",
       "1010000010",
-      "1011001010"
+      "1101011011",
+      "1110000010"
     ],
     "checked": 1024,
-    "elapsed_ns": 8995300,
-    "started_at": "2026-10-07T04:04:25.397451+00:00",
-    "ended_at": "2026-10-07T04:04:25.406205+00:00",
+    "elapsed_ns": 4284700,
+    "started_at": "2026-10-07T13:34:58.376434+00:00",
+    "ended_at": "2026-10-07T13:34:58.381434+00:00",
     "cancelled": false,
-    "elapsed_ms": 8.9953
+    "elapsed_ms": 4.2847
   },
   "multiple_pair_search": {
     "keys": [
-      "1010000010"
+      "1010000010",
+      "1110000010"
     ],
     "checked": 1024,
-    "elapsed_ns": 1649800,
-    "started_at": "2026-10-07T04:04:25.481661+00:00",
-    "ended_at": "2026-10-07T04:04:25.483661+00:00",
+    "elapsed_ns": 1202900,
+    "started_at": "2026-10-07T13:34:58.451453+00:00",
+    "ended_at": "2026-10-07T13:34:58.452801+00:00",
     "cancelled": false,
-    "elapsed_ms": 1.6498
+    "elapsed_ms": 1.2029
   },
   "gif_note": "Frame durations: 1500, 3500, 1500, 4500 ms. Search durations are recorded in elapsed_ns."
 }

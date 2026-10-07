@@ -8,9 +8,13 @@
 """
 import os
 from pathlib import Path
+import PySide6
 
 # 图标由 QPainter 绘制，字体使用系统字体。
 project_root = Path(SPECPATH)
+qt_directory = Path(PySide6.__file__).parent
+runtime_binaries = [(str(qt_directory / name), ".") for name in
+                    ("VCRUNTIME140.dll", "VCRUNTIME140_1.dll")]
 
 # SDES_CONSOLE=1 生成带控制台输出的自检版本。
 console_mode = os.environ.get("SDES_CONSOLE") == "1"
@@ -31,7 +35,7 @@ hidden_imports = [
 a = Analysis(
     ["main.py"],
     pathex=[str(project_root)],
-    binaries=[],
+    binaries=runtime_binaries,
     datas=[],
     hiddenimports=hidden_imports,
     hookspath=[],
@@ -50,6 +54,10 @@ a = Analysis(
     ],
     noarchive=False,
 )
+
+# Qt 使用 Windows 自带的 ICU，其他工具的同名 DLL 可能导出不同符号。
+a.binaries = [entry for entry in a.binaries
+              if not Path(entry[0]).name.lower().startswith("icu")]
 
 pyz = PYZ(a.pure)
 

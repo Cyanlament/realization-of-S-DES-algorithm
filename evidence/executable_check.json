@@ -1,11 +1,18 @@
 {
   "file": "dist/S-DES.exe",
-  "size": 38235635,
-  "sha256": "8f6fd3315cdbcfdf9a1b5c19eecb4721803ed53057c0d18e322d1c29e95d270a",
+  "size": 38486078,
+  "sha256": "f94bd295b5528755df01cb62199cb34e37762d7962c5a65412483a1b274e37ee",
   "entry_point": "S-DES.exe --smoke-test",
   "platform": "windows",
   "different_working_directory": true,
   "exit_code": 0,
   "passed": true,
-  "process_elapsed_seconds": 5.4
+  "process_elapsed_seconds": 3.622,
+  "expected_ciphertext": "11101000",
+  "temporary_directory": "task-local writable directory",
+  "startup_output": {
+    "platform": "windows",
+    "window_visible": true,
+    "ciphertext": "11101000"
+  }
 }

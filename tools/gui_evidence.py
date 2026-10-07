@@ -41,10 +41,10 @@ def main():
             raise RuntimeError(f"Failed to save {name}")
 
     window.process_block()
-    check(window.block_output.text() == "10001100", "GUI binary encryption")
+    check(window.block_output.text() == "11101000", "GUI binary encryption")
     capture("01_binary_encrypt.png")
     window.block_reuse.click()
-    check(window.block_input.text() == "10001100" and window.block_decrypt
+    check(window.block_input.text() == "11101000" and window.block_decrypt
           and not window.block_output.text(), "GUI reuse result switches to decryption and clears prior result")
     window.block_run.click()
     check(window.block_output.text() == "11010111", "GUI binary decryption")
@@ -87,7 +87,7 @@ def main():
     capture("05_unicode.png")
 
     window.tabs.setCurrentIndex(2)
-    window.pair_input.setPlainText("11010111 10001100")
+    window.pair_input.setPlainText("11010111 11101000")
     capture("06_attack_before.png")
 
     def run_search():
@@ -112,7 +112,7 @@ def main():
     capture("08_attack_multiple_before.png")
     run_search()
     multiple = window.last_search.to_dict()
-    check(window.last_search.keys == (642,), "GUI multiple pairs recover unique key")
+    check(window.last_search.keys == (642, 898), "GUI multiple pairs retain equivalent keys")
     capture("09_attack_multiple_result.png")
     window.pair_input.setPlainText("00000000 00000000\n00000000 00000001")
     run_search()
@@ -121,7 +121,7 @@ def main():
 
     window.tabs.setCurrentIndex(3)
     window.process_collisions()
-    check("240" in window.collision_status.text(), "GUI collision summary")
+    check(str(json.loads((ROOT / "evidence/collisions.json").read_text(encoding="utf-8"))["plaintext_215"]["distinct_ciphertexts"]) in window.collision_status.text(), "GUI collision summary")
     capture("11_collisions.png")
     # Save minimum-size layout checks separately from the report screenshots.
     review = ROOT / "tmp/ui-review"

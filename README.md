@@ -51,7 +51,7 @@ python3 -m venv .venv
 | 要求 | 实现与证据 |
 | --- | --- |
 | 第一关：基本测试 | 8 位数据、10 位密钥、GUI 交互；262,144 次加解密往返全部通过 |
-| 第二关：交叉测试 | Python/C++ 的 262,144 个加密结果一致；35 组解密验证通过；与其他小组的交叉测试均通过 |
+| 第二关：交叉测试 | Python/C++ 的 262,144 个加密结果一致；35 组解密验证通过；此前与其他小组的交叉测试均通过，修正版待重新互验 |
 | 第三关：扩展功能 | 按字节处理 ASCII；Hex、Base64、转义字节无损密文；额外支持 UTF-8 |
 | 第四关：暴力破解 | 单组/多组已知明密文、全部候选密钥、纳秒计时、开始结束时间戳、Qt 后台线程、动图 |
 | 第五关：封闭测试 | 256 个明文 × 1024 个密钥的碰撞统计、可复现随机案例、抽屉原理分析 |
@@ -81,12 +81,12 @@ python3 -m venv .venv
 ```bash
 python -m unittest discover -s tests -v
 python -m sdes encrypt 11010111 --key 1010000010
-python -m sdes decrypt 10001100 --key 1010000010
+python -m sdes decrypt 11101000 --key 1010000010
 python -m sdes crack --pairs-file evidence/known_pairs.txt
 python tools/verify_vectors.py evidence/cross_vectors.json
 ```
 
-加密输出 `10001100`，解密输出 `11010111`。重新生成全部数值实验还需要 `g++`：
+加密输出 `11101000`，解密输出 `11010111`。重新生成全部数值实验还需要 `g++`：
 
 ```bash
 python tools/run_experiments.py

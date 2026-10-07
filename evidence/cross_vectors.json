@@ -1,6 +1,6 @@
 {
   "source": "reference/sdes_reference.cpp",
-  "key_schedule": "LS-1 then cumulative LS-2",
+  "key_schedule": "LS-1 and LS-2 from P10(K)",
   "vectors": [
     {
       "key": "0000000000",
@@ -40,17 +40,17 @@
     {
       "key": "0000000001",
       "plaintext": "00000000",
-      "ciphertext": "10110001"
+      "ciphertext": "10110101"
     },
     {
       "key": "0000000001",
       "plaintext": "00000001",
-      "ciphertext": "01100000"
+      "ciphertext": "01100100"
     },
     {
       "key": "0000000001",
       "plaintext": "01000001",
-      "ciphertext": "11110100"
+      "ciphertext": "11010100"
     },
     {
       "key": "0000000001",
@@ -60,12 +60,12 @@
     {
       "key": "0000000001",
       "plaintext": "10101010",
-      "ciphertext": "01010000"
+      "ciphertext": "01110000"
     },
     {
       "key": "0000000001",
       "plaintext": "11010111",
-      "ciphertext": "01101101"
+      "ciphertext": "01001101"
     },
     {
       "key": "0000000001",
@@ -75,72 +75,72 @@
     {
       "key": "0101010101",
       "plaintext": "00000000",
-      "ciphertext": "11010011"
+      "ciphertext": "00010111"
     },
     {
       "key": "0101010101",
       "plaintext": "00000001",
-      "ciphertext": "11001011"
+      "ciphertext": "00001111"
     },
     {
       "key": "0101010101",
       "plaintext": "01000001",
-      "ciphertext": "01111011"
+      "ciphertext": "11111011"
     },
     {
       "key": "0101010101",
       "plaintext": "01010101",
-      "ciphertext": "10010100"
+      "ciphertext": "01110000"
     },
     {
       "key": "0101010101",
       "plaintext": "10101010",
-      "ciphertext": "00101010"
+      "ciphertext": "00001110"
     },
     {
       "key": "0101010101",
       "plaintext": "11010111",
-      "ciphertext": "10010001"
+      "ciphertext": "10010101"
     },
     {
       "key": "0101010101",
       "plaintext": "11111111",
-      "ciphertext": "11000101"
+      "ciphertext": "00000101"
     },
     {
       "key": "1010000010",
       "plaintext": "00000000",
-      "ciphertext": "00001110"
+      "ciphertext": "01101010"
     },
     {
       "key": "1010000010",
       "plaintext": "00000001",
-      "ciphertext": "10000001"
+      "ciphertext": "01000101"
     },
     {
       "key": "1010000010",
       "plaintext": "01000001",
-      "ciphertext": "00010101"
+      "ciphertext": "10010001"
     },
     {
       "key": "1010000010",
       "plaintext": "01010101",
-      "ciphertext": "11000001"
+      "ciphertext": "00000101"
     },
     {
       "key": "1010000010",
       "plaintext": "10101010",
-      "ciphertext": "10001101"
+      "ciphertext": "00001001"
     },
     {
       "key": "1010000010",
       "plaintext": "11010111",
-      "ciphertext": "10001100"
+      "ciphertext": "11101000"
     },
     {
       "key": "1010000010",
       "plaintext": "11111111",
-      "ciphertext": "11101010"
+      "ciphertext": "10001110"
     },
     {
       "key": "1111111111",

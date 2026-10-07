@@ -1,6 +1,6 @@
 test_collision_groups_partition_key_space (test_sdes.AnalysisTests) ... ok
 test_inconsistent_pairs (test_sdes.AnalysisTests) ... ok
-test_multiple_pairs_recover_key (test_sdes.AnalysisTests) ... ok
+test_multiple_pairs_return_equivalent_keys (test_sdes.AnalysisTests) ... ok
 test_no_pairs_and_bad_pairs (test_sdes.AnalysisTests) ... ok
 test_progress_and_cancellation (test_sdes.AnalysisTests) ... ok
 test_search_returns_all_matches (test_sdes.AnalysisTests) ... ok
@@ -10,6 +10,7 @@ test_hand_worked_vector (test_sdes.CoreTests) ... ok
 test_integer_range_validation (test_sdes.CoreTests) ... ok
 test_inverse_permutation_all_blocks (test_sdes.CoreTests) ... ok
 test_strict_binary_validation (test_sdes.CoreTests) ... ok
+test_subkeys_from_independent_pdf_shifts (test_sdes.CoreTests) ... ok
 test_trace_matches_fast_path (test_sdes.CoreTests) ... ok
 test_all_ascii_bytes_round_trip (test_sdes.EncodingTests) ... ok
 test_all_bytes_all_formats_round_trip (test_sdes.EncodingTests) ... ok
@@ -20,6 +21,6 @@ test_reject_unknown_modes_and_wrong_type (test_sdes.EncodingTests) ... ok
 test_unicode_and_whitespace_round_trip (test_sdes.EncodingTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 20 tests in 0.606s
+Ran 21 tests in 0.455s
 
 OK

@@ -70,7 +70,7 @@ def main():
             vectors.append({"key": f"{key:010b}", "plaintext": f"{plaintext:08b}",
                             "ciphertext": f"{cipher:08b}"})
     save_json(evidence / "cross_vectors.json", {"source": "reference/sdes_reference.cpp",
-                                               "key_schedule": "LS-1 then cumulative LS-2", "vectors": vectors})
+                                               "key_schedule": "LS-1 and LS-2 from P10(K)", "vectors": vectors})
     with (evidence / "cross_vectors.csv").open("w", newline="", encoding="utf-8") as stream:
         writer = csv.DictWriter(stream, fieldnames=("key", "plaintext", "ciphertext"))
         writer.writeheader()
@@ -87,16 +87,16 @@ def main():
     save_json(evidence / "ascii_result.json", ascii_result)
 
     # A single known pair may have multiple keys; keep adding distinct plaintexts.
-    pairs = [(215, 140)]
+    pairs = [(215, 232)]
     narrowing = []
     for plaintext in [215, 0, 1, 65, 85, 170, 255]:
         if plaintext != 215:
             pairs.append((plaintext, encrypt_block(plaintext, 642)))
         result = brute_force(pairs)
         narrowing.append({"pairs": [[f"{p:08b}", f"{c:08b}"] for p, c in pairs], **result.to_dict()})
-        if result.keys == (642,):
+        if result.keys == (642, 898):
             break
-    assert result.keys == (642,)
+    assert result.keys == (642, 898)
     (evidence / "known_pairs.txt").write_text(
         "\n".join(f"{p:08b} {c:08b}" for p, c in pairs) + "\n", encoding="utf-8")
     core._subkeys.cache_clear()

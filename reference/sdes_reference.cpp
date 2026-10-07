@@ -32,8 +32,8 @@ std::vector<string> key_schedule(const string& key) {
     string left = shift_half(permuted.substr(0,5), 1);
     string right = shift_half(permuted.substr(5,5), 1);
     string first = select_bits(left + right, {6,3,7,4,8,5,10,9});
-    left = shift_half(left, 2);
-    right = shift_half(right, 2);
+    left = shift_half(permuted.substr(0,5), 2);
+    right = shift_half(permuted.substr(5,5), 2);
     return {first, select_bits(left + right, {6,3,7,4,8,5,10,9})};
 }
 

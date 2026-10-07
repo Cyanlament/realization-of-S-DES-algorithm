@@ -2,28 +2,26 @@
   "random_seed": 20261007,
   "random_plaintext": "01110100",
   "random_key": "1011010110",
-  "random_ciphertext": "11111010",
+  "random_ciphertext": "01011010",
   "random_pair_candidates": [
-    "0100010011",
-    "0101011011",
-    "0110010110",
-    "0111011110",
-    "1010011110",
-    "1011010110"
+    "1000101111",
+    "1011010110",
+    "1100101111",
+    "1111010110"
   ],
   "plaintexts_checked": 256,
   "all_plaintexts_have_collisions": true,
-  "min_distinct_ciphertexts": 238,
-  "max_distinct_ciphertexts": 240,
-  "max_keys_per_ciphertext": 12,
-  "unique_full_encryption_permutations": 1024,
-  "globally_equivalent_key_groups": 0,
+  "min_distinct_ciphertexts": 254,
+  "max_distinct_ciphertexts": 254,
+  "max_keys_per_ciphertext": 8,
+  "unique_full_encryption_permutations": 512,
+  "globally_equivalent_key_groups": 512,
   "plaintext_215": {
     "plaintext": "11010111",
-    "distinct_ciphertexts": 240,
-    "collision_groups": 224,
-    "singleton_groups": 16,
-    "max_keys_per_ciphertext": 12,
-    "colliding_key_pairs": 2296
+    "distinct_ciphertexts": 254,
+    "collision_groups": 254,
+    "singleton_groups": 0,
+    "max_keys_per_ciphertext": 8,
+    "colliding_key_pairs": 1728
   }
 }

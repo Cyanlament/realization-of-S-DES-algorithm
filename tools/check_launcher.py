@@ -18,12 +18,14 @@ def main():
         parser.error("The BAT launcher test requires Windows")
     environment = os.environ.copy()
     environment["QT_QPA_PLATFORM"] = args.platform
+    log_path = ROOT / "build/launcher_check.log"
+    log_path.parent.mkdir(exist_ok=True)
+    environment["SDES_LOG"] = str(log_path)
     result = subprocess.run(
         [os.environ.get("COMSPEC", "cmd.exe"), "/d", "/c", str(ROOT / "run.bat"), "--smoke-test"],
         cwd=ROOT.parent, env=environment, input=b"\r\n", capture_output=True, timeout=30,
     )
     console = (result.stdout + result.stderr).decode("utf-8", errors="replace")
-    log_path = ROOT / "startup.log"
     log = log_path.read_text(encoding="utf-8", errors="replace") if log_path.exists() else ""
     success = result.returncode == 0 and "SDES_LAUNCH_OK" in log
     report = {"passed": success, "platform": args.platform, "exit_code": result.returncode,
